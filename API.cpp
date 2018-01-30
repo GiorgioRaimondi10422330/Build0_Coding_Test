@@ -1,7 +1,7 @@
 #include "API.hpp"
 namespace API_SPACE{
 
-
+//Function for printing configuration value in JSON format
 void Print_JSON(std::vector<CONF_VALUE> & CONF_LIST){
 	for(int i=0; i<CONF_LIST.size();i++){
 		std::cout<<std::endl;
@@ -13,6 +13,7 @@ void Print_JSON(std::vector<CONF_VALUE> & CONF_LIST){
 	}
 };
 
+//Function that check if the ID is the correct format and erase the backslash
 int API::check_ID(std::string & IN, std::string & OUT){
 	int comparison;
 	char backslash='\\';
@@ -27,16 +28,16 @@ int API::check_ID(std::string & IN, std::string & OUT){
 	return comparison;
 }
 
-
+//Return the Configuration value for a given ID
 std::vector<CONF_VALUE> API::GET(std::string & ID){
-	std::string short_ID;
 
+	std::string short_ID;		//ID without backslash
 	std::vector<CONF_VALUE> value;
 
 	int check=check_ID(ID,short_ID);
 
 	if(check==0){
-		// No ID format
+		// The ID is not in ID format
 		std::cout<<"The ID must start with a backslash"<<std::endl;
 	}else if(check==1){
 		// "ID"= "\"
@@ -47,9 +48,9 @@ std::vector<CONF_VALUE> API::GET(std::string & ID){
 			std::cout<<"The API doesn't contain any configuration"<<std::endl;
 		}
 	}else{
-		// general ID format
+		// If the ID is in a general format
 		API_MAP::iterator it=STORE.find(short_ID);
-		if(it!=STORE.end())
+		if(it!=STORE.end())//If found
 			value.push_back(it->second);
 		else{
 			std::cout<<"There is no value for the given ID"<<std::endl;
@@ -63,14 +64,14 @@ std::vector<CONF_VALUE> API::GET(std::string & ID){
 	return value;
 }
 
+// Add a new configuration value to the API
 bool API::POST(std::string & ID,std::string & NAME, std::string & VALUE){
 	std::string short_ID;
 	bool worked=true;
 
 	int check=check_ID(ID,short_ID);
 	if(check<2){
-		// No ID format
-		std::cout<<"The ID must start with a backslash"<<std::endl;
+		std::cout<<"The ID is not in the correct format"<<std::endl;
 		worked=false;
 	} else{
 		CONF_VALUE value;
@@ -79,18 +80,17 @@ bool API::POST(std::string & ID,std::string & NAME, std::string & VALUE){
 		value[2]=VALUE;
 		STORE.insert(std::make_pair(short_ID,value));
 	}
-
 	return worked;
 }
 
+//Modify the Configuration value for a given ID
 bool API::PUT(std::string & ID,std::string & NAME, std::string & VALUE){
 	std::string short_ID;
 	bool worked=true;
 
 	int check=check_ID(ID,short_ID);
 	if(check<2){
-		// No ID format
-		std::cout<<"The ID must start with a backslash"<<std::endl;
+		std::cout<<"The ID is not in the correct format"<<std::endl;
 		worked=false;
 	} else{		// general ID format
 		API_MAP::iterator it=STORE.find(short_ID);
@@ -121,30 +121,29 @@ bool API::DEL(std::string & ID){
 	} else if(check==2){		// general ID format
 		API_MAP::iterator it=STORE.find(short_ID);
 		if(it!=STORE.end())
-			STORE.erase(it);
+			STORE.erase(it);	//Delete the given ID
 		else{
 			std::cout<<"There is no value for the given ID"<<std::endl;
 			worked=false;
 		}
-	}else{
-		STORE.clear();
+	}else{						//"ID"="\"
+		STORE.clear();			//delete all the configuration
 	}
 	return worked;
 }
 
+// Change an ID already present in the file
 bool API::CHANGE_ID(std::string & ID,std::string & NEW_ID){
 	std::string short_ID;
 	std::string new_short_ID;
 	bool worked=true;
 
-
 	if(check_ID(ID,short_ID)<2 || check_ID(NEW_ID, new_short_ID)<2){
-		// No ID format
 		std::cout<<"One of the ID must start is not in the correct format"<<std::endl;
 		worked=false;
 	} else {		// general ID format
 		API_MAP::iterator it=STORE.find(short_ID);
-		if(it!=STORE.end()){
+		if(it!=STORE.end()){ //Change the ID value
 			CONF_VALUE new_Val=it->second;
 			new_Val[0]=new_short_ID;
 			STORE.erase(it);

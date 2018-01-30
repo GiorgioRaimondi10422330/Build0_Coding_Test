@@ -7,10 +7,13 @@
 #include <map>		//for map
 #include <string>	//for string
 #include <vector>   //for vector
-#include <array>
+#include <array>	//for array
 
 namespace API_SPACE{
-typedef std::array<std::string, 3> CONF_VALUE;
+
+//Class containing the the configuration value
+typedef std::array<std::string, 3> CONF_VALUE; 
+
 typedef std::map<std::string ,CONF_VALUE> API_MAP;
 
 class API{
@@ -46,7 +49,6 @@ public:
 
 	//Change ID configuaration for a given ID
 	bool CHANGE_ID(std::string & ID, std::string & NEW_ID);
-
 
 private:
 	//API MAP STORING THE ELEMENT
