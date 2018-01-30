@@ -16,7 +16,7 @@
 - runnable	: Eseguibile
 
 
-## Instalazione ed Esecuzione
+## Installazione ed Esecuzione
 
 Il programma è stato scritto in linguaggio C++11, facendo largo delle sole standard libraries.
 
@@ -43,13 +43,15 @@ L'idea dietro a questo programma è quella di utilizzare le potenzialità di con
 
 Il valore di configurazione è stato salvato all'interno della map come un array di lunghezza 3 (CONF_VALUE), al quale è associato un valore chiave identico al valore ID salvato.
 
-I metodi implementati per la semplificazione dell'interfaccia utente sono principalmente 4:
+I metodi implementati per la semplificazione dell'interfaccia utente sono principalmente 5:
 
 - GET: riceve in ingresso una string contenente il valore di ID preceduto dal backslash e ritorna, qualora esista una ID identico tra i valori chiave della map, il valore di configurazione. Qualora venga passato come ID il solo backslash, la funzione ritorna un vettore di tutti valori di configurazione presenti nella map  e li stampa a video.
 
 - POST: riceve in ingresso 3 string contenenti i 3 dati per i valori di configurazione e se non esiste un ID uguale a quello passato nella map, salva all'interno di questa un nuovo elemento. Restituisce vero se l'operazione è andata a buon fine.
 
 - PUT: riceve in ingresso 3 string contenenti i 3 dati per i valori di configarazione e se esiste un ID nella map uguale a quello passato, sostituisce i valori di configurazione riferiti al NAME ed al VALUE. Restituisce vero se l'operazione è andata a buon fine.
+
+- CHANGE_ID: riceve in ingresso 2 string contenenti rispettivamente ID iniziale e l'ID da sostituire. Qualora ci sia un valore chiave uguale al primo ID lo sostituisce col secondo. Restituisce vero se l'operazione è andata a buon fine.
 
 - DEL: riceve in ingresso 1 string contenente un valore ID e se presente un ID equivalente tra le key della map lo rimuove. Qualora sia passato come ID il solo backslash, rimuove tutti gli elementi nella map.
 Restituisce vero se l'operazione è andata a buon fine.
